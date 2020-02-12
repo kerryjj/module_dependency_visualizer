@@ -1,0 +1,50 @@
+use Mix.Config
+
+# Copy this to dev.exs and change the path_wildcard to include the modules that you want to visualize.
+
+# Minimum config
+config :module_dependency_visualizer,
+       path_wildcard: "/Users/me/code/lib/**/*.{ex, exs}"
+
+# Additional config that shows how to filer the output to exclude things that you don't want in the graph
+# config :module_dependency_visualizer,
+#        path_wildcard: "/Users/me/code/lib/**/*.{ex, exs}",
+#        include_from_contains: "Domain",
+#        exclude_to: [
+#          "Map",
+#          "List",
+#          "Stream",
+#          "Path",
+#          "Poison",
+#          "Logger",
+#          "Timex",
+#          "File",
+#          "Enum",
+#          "crypto",
+#          "String",
+#          "Base",
+#          "Integer",
+#          "DateTime",
+#          "os",
+#          "Number",
+#          "Elixir.Kernel",
+#          "Regex",
+#          "URI",
+#          "Application",
+#          "Date",
+#          "Tesla",
+#          "Jason",
+#          "Supervisor",
+#          "Atom",
+#          "Process",
+#          "Plug",
+#          "Plug.Conn",
+#          "IO",
+#          "init",
+#          "rand",
+#          "IO",
+#          "erlang",
+#          "Float",
+#          "Kernel",
+#          "Plug.Upload"
+#        ]

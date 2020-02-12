@@ -5,6 +5,8 @@ defmodule ModuleDependencyVisualizer do
   to generate a graph PNG for us thanks to graphviz.
   """
 
+  require Logger
+
   @doc """
   Analyzes a given list of file paths (absolute or relative), creates the
   necessary Graphviz file, and then creates the graph and opens it.
@@ -13,6 +15,7 @@ defmodule ModuleDependencyVisualizer do
   def run(file_paths) do
     file_paths
     |> analyze
+    |> filter_dependency_list
     |> create_gv_file
     |> create_and_open_graph
 
@@ -210,6 +213,16 @@ defmodule ModuleDependencyVisualizer do
     Enum.join(module_info, ".")
   end
 
+  @spec filter_dependency_list(list) :: String.t()
+  def filter_dependency_list(dependency_list) do
+    include_from_contains = Application.get_env(:module_dependency_visualizer, :include_from_contains)
+    exclude_to = Application.get_env(:module_dependency_visualizer, :exclude_to)
+
+    dependency_list
+    |> Enum.filter(fn {dep_from, _} -> String.contains?(dep_from, include_from_contains) end)
+    |> Enum.filter(fn {_, dep_to} -> !Enum.member?(exclude_to, dep_to) end)
+  end
+
   @doc """
   Takes a list of dependencies and returns a string that is a valid `dot` file.
   """
@@ -226,9 +239,9 @@ defmodule ModuleDependencyVisualizer do
   @spec create_and_open_graph(String.t()) :: {Collectable.t(), exit_status :: non_neg_integer}
   def create_and_open_graph(gv_file) do
     gv_file_path = "./output.gv"
-    graph_path = "./graph.png"
+    graph_path = "./graph.pdf"
     File.write(gv_file_path, gv_file)
-    System.cmd("dot", ["-Tpng", gv_file_path, "-o", graph_path])
+    System.cmd("dot", ["-Tpdf", gv_file_path, "-o", graph_path])
     System.cmd("open", [graph_path])
   end
 end

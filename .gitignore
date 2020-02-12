@@ -22,3 +22,14 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 module_dependency_visualizer-*.tar
 
+# Ignore intellij project files
+.idea
+*.iml
+
+# Ignore generated files
+graph.pdf
+graph.png
+output.gv
+
+# Ignore project specific config
+config/dev.exs
